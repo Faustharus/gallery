@@ -49,22 +49,29 @@ class _LiveScreenState extends State<LiveScreen> {
               return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (BuildContext context, int index) {
-                  String url = snapshot.data!.docs[index]['downloadURL'];
-                  Image bigPics =
-                      Image.network(url, height: 400, fit: BoxFit.cover);
-                  return Material(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) {
-                          return DetailScreen(
-                            urlImage: url,
-                            currentImage: bigPics,
-                          );
-                        }));
-                      },
-                      child: Hero(tag: url, child: bigPics),
-                    ),
-                  );
+                  if (!snapshot.data!.docs.length.isNaN) {
+                    String url = snapshot.data!.docs[index]['downloadURL'];
+                    Image bigPics =
+                        Image.network(url, height: 400, fit: BoxFit.cover);
+                    return Material(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (_) {
+                            return DetailScreen(
+                              urlImage: url,
+                              currentImage: bigPics,
+                            );
+                          }));
+                        },
+                        child: Hero(tag: url, child: bigPics),
+                      ),
+                    );
+                  } else {
+                    return Dismissible(
+                        key: Key(snapshot.data!.docs[index]['downloadURL']),
+                        child: const Text(""));
+                  }
                 },
               );
             } else {

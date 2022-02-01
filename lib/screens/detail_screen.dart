@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gallery/models/user_model.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -38,46 +39,74 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${loggedInUser.firstName}"),
+        title: Text(
+          "/images/post_postID",
+          overflow: TextOverflow.visible,
+        ),
       ),
-      body: StreamBuilder(
-          stream: getImage(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    String url = snapshot.data!.docs[index]['downloadURL'];
-                    Image bigPics =
-                        Image.network(url, height: 200, fit: BoxFit.cover);
-                    return Material(
-                      child: InkWell(
-                        onTap: null,
-                        child: Hero(tag: url, child: bigPics),
-                      ),
-                    );
-                  });
-            } else {
-              return (const Center(
-                child: Text("No Image detected"),
-              ));
-            }
-          }),
+      body: InkWell(
+        onTap: null,
+        child: Hero(
+          tag: widget.urlImage!,
+          child: Image.network(widget.urlImage!, fit: BoxFit.cover),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.red,
+        onPressed: () {
+          deleteImage(widget.urlImage!);
+          backToLive();
+        },
+        child: const Icon(
+          FontAwesomeIcons.trash,
+        ),
+      ),
     );
   }
 
-  getImage() {
-    FirebaseFirestore.instance
+  backToLive() {
+    Navigator.pop(context);
+  }
+
+  Future<void> deleteImage(String url) async {
+    final postID = DateTime.now().microsecondsSinceEpoch.toString();
+    if (widget.urlImage != null) {
+      Reference ref = await FirebaseStorage.instance.refFromURL(url);
+      await ref.delete();
+      print("Deleting Successfull");
+      print("users/${user!.uid}/images/");
+    } else {
+      print("Error");
+    }
+    await FirebaseFirestore.instance
         .collection("users")
-        .doc(widget.userId)
+        .doc(user!.uid)
         .collection("images")
-        .snapshots();
-    /*const postID = String;
-    Reference ref = FirebaseStorage.instance
+        .doc()
+        .delete();
+  }
+  /*Future<void> deleteImage(String url) async {
+    Reference ref = FirebaseStorage.instance.refFromURL(url);
+    await ref.delete().then((value) => print("Deleted Successfully"));
+    /*final postID = DateTime.now().microsecondsSinceEpoch.toString();
+    try {
+      Reference ref = FirebaseStorage.instance
+          .ref()
+          .child("${widget.userId}/images")
+          .child("post_$postID")
+          .child(url);
+      await ref.delete();
+    } catch (e) {
+      print("Error in deleting the image from cloud: $e");
+    }*/
+    /*Reference ref = FirebaseStorage.instance
         .ref()
         .child("${widget.userId}/images")
-        .child("post_$postID");
-    await ref.getData();*/
-  }
+        .child("post_$postID");*/
+    /*try {
+      await FirebaseStorage.instance.refFromURL(url).delete();
+    } catch (e) {
+      print("Error in deleting the image from cloud: $e");
+    }*/
+  }*/
 }
