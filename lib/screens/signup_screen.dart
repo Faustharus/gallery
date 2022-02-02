@@ -20,8 +20,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
 
   // Editing Controller
-  final firstNameEditingController = new TextEditingController();
-  final lastNameEditingController = new TextEditingController();
+  final fullNameEditingController = new TextEditingController();
   final emailEditingController = new TextEditingController();
   final passwordEditingController = new TextEditingController();
   final confirmPasswordEditingController = new TextEditingController();
@@ -29,55 +28,28 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     // First Name Field
-    final firstNameField = TextFormField(
+    final fullNameField = TextFormField(
       autofocus: false,
-      controller: firstNameEditingController,
+      controller: fullNameEditingController,
       keyboardType: TextInputType.name,
       validator: (value) {
-        RegExp regex = new RegExp(r'^.{3,}$');
+        RegExp regex = new RegExp(r'^.{6,}$');
         if (value!.isEmpty) {
-          return ("First Name is required");
+          return ("Full Name is required");
         }
         if (!regex.hasMatch(value)) {
-          return ("A Name of min 3 characters is required");
+          return ("A Name of min 6 characters is required");
         }
         return null;
       },
       onSaved: (value) {
-        firstNameEditingController.text = value!;
+        fullNameEditingController.text = value!;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.account_circle),
         contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: "First Name",
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-    );
-
-    // Last Name Field
-    final lastNameField = TextFormField(
-      autofocus: false,
-      controller: lastNameEditingController,
-      keyboardType: TextInputType.name,
-      validator: (value) {
-        RegExp regex = new RegExp(r'^.{3,}$');
-        if (value!.isEmpty) {
-          return ("Last Name is required");
-        }
-        if (!regex.hasMatch(value)) {
-          return ("A Name of min 3 characters is required");
-        }
-        return null;
-      },
-      onSaved: (value) {
-        lastNameEditingController.text = value!;
-      },
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        prefixIcon: const Icon(Icons.account_circle),
-        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: "Last Name",
+        hintText: "Full Name",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
@@ -210,9 +182,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                     ),
                     const SizedBox(height: 45),
-                    firstNameField,
-                    const SizedBox(height: 20),
-                    lastNameField,
+                    fullNameField,
                     const SizedBox(height: 20),
                     emailField,
                     const SizedBox(height: 20),
@@ -244,20 +214,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   postDetailsToFirestore() async {
-    //Calling Firestore
-    // calling user model
-    // sending these values
-
     FirebaseFirestore firesbaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
 
     UserModel userModel = UserModel();
 
-    // wrinting all values
     userModel.email = user!.email;
     userModel.uid = user.uid;
-    userModel.firstName = firstNameEditingController.text;
-    userModel.lastName = lastNameEditingController.text;
+    userModel.fullName = fullNameEditingController.text;
 
     await firesbaseFirestore
         .collection("users")

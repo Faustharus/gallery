@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 24),
               Text(
-                "${loggedInUser.firstName} ${loggedInUser.lastName}",
+                "${loggedInUser.fullName}",
                 style:
                     const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
