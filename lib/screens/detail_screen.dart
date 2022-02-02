@@ -10,8 +10,10 @@ import 'package:gallery/models/user_model.dart';
 class DetailScreen extends StatefulWidget {
   final String? userId;
   final String? urlImage;
+  final String? idImage;
   final Image? currentImage;
-  const DetailScreen({Key? key, this.userId, this.urlImage, this.currentImage})
+  const DetailScreen(
+      {Key? key, this.userId, this.urlImage, this.idImage, this.currentImage})
       : super(key: key);
 
   @override
@@ -40,7 +42,7 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "/images/post_postID",
+          "/images/${widget.idImage}",
           overflow: TextOverflow.visible,
         ),
       ),
@@ -69,12 +71,11 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   Future<void> deleteImage(String url) async {
-    final postID = DateTime.now().microsecondsSinceEpoch.toString();
     if (widget.urlImage != null) {
       Reference ref = await FirebaseStorage.instance.refFromURL(url);
       await ref.delete();
       print("Deleting Successfull");
-      print("users/${user!.uid}/images/");
+      print("users/${user!.uid}/images/${widget.idImage}");
     } else {
       print("Error");
     }
@@ -82,31 +83,7 @@ class _DetailScreenState extends State<DetailScreen> {
         .collection("users")
         .doc(user!.uid)
         .collection("images")
-        .doc()
+        .doc(widget.idImage)
         .delete();
   }
-  /*Future<void> deleteImage(String url) async {
-    Reference ref = FirebaseStorage.instance.refFromURL(url);
-    await ref.delete().then((value) => print("Deleted Successfully"));
-    /*final postID = DateTime.now().microsecondsSinceEpoch.toString();
-    try {
-      Reference ref = FirebaseStorage.instance
-          .ref()
-          .child("${widget.userId}/images")
-          .child("post_$postID")
-          .child(url);
-      await ref.delete();
-    } catch (e) {
-      print("Error in deleting the image from cloud: $e");
-    }*/
-    /*Reference ref = FirebaseStorage.instance
-        .ref()
-        .child("${widget.userId}/images")
-        .child("post_$postID");*/
-    /*try {
-      await FirebaseStorage.instance.refFromURL(url).delete();
-    } catch (e) {
-      print("Error in deleting the image from cloud: $e");
-    }*/
-  }*/
 }

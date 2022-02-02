@@ -59,9 +59,9 @@ class _LiveScreenState extends State<LiveScreen> {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (_) {
                             return DetailScreen(
-                              urlImage: url,
-                              currentImage: bigPics,
-                            );
+                                urlImage: url,
+                                currentImage: bigPics,
+                                idImage: snapshot.data!.docs[index].id);
                           }));
                         },
                         child: Hero(tag: url, child: bigPics),
