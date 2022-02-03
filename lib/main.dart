@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:gallery/views/xd_mon_profil.dart';
 import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
+import 'package:adobe_xd/pinned.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Instalike",
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: user != null ? HomeScreen() : LoginScreen(),
+      home: user != null ? HomeScreen() : XDMonProfil(),
     );
   }
 }
