@@ -23,6 +23,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Email Placeholder
+    final titleEmail = const Text(
+      "Adresse Email",
+      style: TextStyle(
+        fontFamily: 'Poppins',
+        fontSize: 12,
+        color: Color(0xff02132b),
+        fontWeight: FontWeight.w500,
+        height: 1.6666666666666667,
+      ),
+    );
+
     // Email Field
     final emailField = TextFormField(
       autofocus: false,
@@ -41,19 +53,38 @@ class _LoginScreenState extends State<LoginScreen> {
         emailController.text = value!;
       },
       textInputAction: TextInputAction.next,
+      style: const TextStyle(
+        fontFamily: 'Poppins',
+        fontSize: 13,
+        color: Color(0x6902132b),
+        fontWeight: FontWeight.w500,
+        height: 1.7692307692307692,
+      ),
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.mail),
         contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: "Email",
+        hintText: "john.doe@gmail.com",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
+
+    // Password Placeholder
+    final titlePassword = const Text(
+      "Mot de Passe",
+      style: TextStyle(
+        fontFamily: 'Poppins',
+        fontSize: 12,
+        color: Color(0xff02132b),
+        fontWeight: FontWeight.w500,
+        height: 1.6666666666666667,
       ),
     );
 
     // Password Field
     final passwordField = TextFormField(
       autofocus: false,
-      controller: passwordController,
       obscureText: true,
+      controller: passwordController,
       validator: (value) {
         RegExp regex = new RegExp(r'^.{6,}$');
         if (value!.isEmpty) {
@@ -67,11 +98,46 @@ class _LoginScreenState extends State<LoginScreen> {
         passwordController.text = value!;
       },
       textInputAction: TextInputAction.done,
+      style: const TextStyle(
+        fontFamily: 'Poppins',
+        fontSize: 13,
+        color: Color(0x6902132b),
+        fontWeight: FontWeight.w500,
+        height: 1.7692307692307692,
+      ),
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.vpn_key),
         contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: "Password",
+        hintText: "Mot de Passe",
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
+
+    // Reset Password Button
+    final resetPassword = const Text.rich(
+      TextSpan(
+        style: TextStyle(
+          fontFamily: 'Poppins',
+          fontSize: 13,
+          color: Color(0xffa7adb5),
+          height: 2.4615384615384617,
+        ),
+        children: [
+          TextSpan(
+            text: 'Mot de passe oublié ? ',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          TextSpan(
+            text: 'Réinitialiser',
+            style: TextStyle(
+              color: Color(0xff02132b),
+              fontWeight: FontWeight.w500,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+        ],
       ),
     );
 
@@ -79,74 +145,112 @@ class _LoginScreenState extends State<LoginScreen> {
     final loginButton = Material(
       elevation: 5,
       borderRadius: BorderRadius.circular(30),
-      color: Colors.blueAccent,
-      child: MaterialButton(
-        padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {
-          signIn(emailController.text, passwordController.text);
-        },
-        child: const Text(
-          "Login",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+      color: Colors.black,
+      child: const SizedBox(
+        width: 316.0,
+        height: 50,
+        child: MaterialButton(
+          padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          minWidth: MediaQuery.of(context).size.width,
+          onPressed: () {
+            signIn(emailController.text, passwordController.text);
+          },
+          child: Text(
+            'Connexion',
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontSize: 14,
+              color: Color(0xffffffff),
+              fontWeight: FontWeight.w400,
+              height: 1.2142857142857142,
+            ),
+            textHeightBehavior:
+                TextHeightBehavior(applyHeightToFirstAscent: false),
+            textAlign: TextAlign.center,
+            softWrap: false,
+          ),
         ),
       ),
     );
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: const IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RegistrationScreen(),
+              ),
+            );
+          },
+        ),
+      ),
       backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
           child: Container(
             color: Colors.white,
             child: Padding(
-              padding: const EdgeInsets.all(36.0),
+              padding: const EdgeInsets.all(12.0),
               child: Form(
                 key: _formKey,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(
-                      height: 200,
-                      child: Image.asset(
-                        "assets/Residence.png",
-                        fit: BoxFit.contain,
+                    const SizedBox(
+                      height: 50,
+                      child: Text(
+                        "Connectez-vous ou \ncréez un compte.",
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                     const SizedBox(height: 45),
-                    emailField,
-                    const SizedBox(height: 25),
-                    passwordField,
-                    const SizedBox(height: 35),
-                    loginButton,
-                    const SizedBox(height: 15),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        const Text("Don't have an account yet ? "),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const RegistrationScreen(),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            "Sign Here",
-                            style: TextStyle(
-                                color: Colors.blueAccent,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15),
-                          ),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 270.0, 5),
+                          child: titleEmail,
                         ),
+                        Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0x0802132b),
+                              borderRadius: BorderRadius.circular(7.0),
+                            ),
+                            child: emailField),
                       ],
                     ),
+                    const SizedBox(height: 25),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 270.0, 5),
+                          child: titlePassword,
+                        ),
+                        Container(
+                            decoration: BoxDecoration(
+                              color: const Color(0x0802132b),
+                              borderRadius: BorderRadius.circular(7.0),
+                            ),
+                            child: passwordField),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    resetPassword,
+                    const SizedBox(height: 25),
+                    Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xff02132b),
+                          borderRadius: BorderRadius.circular(7.0),
+                        ),
+                        child: loginButton),
                   ],
                 ),
               ),
