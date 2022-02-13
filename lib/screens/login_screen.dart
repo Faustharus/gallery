@@ -177,8 +177,8 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: const IconButton(
-          icon: Icon(
+        leading: IconButton(
+          icon: const Icon(
             Icons.arrow_back,
             color: Colors.black,
           ),
@@ -186,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => RegistrationScreen(),
+                builder: (context) => const RegistrationScreen(),
               ),
             );
           },
