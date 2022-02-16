@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gallery/models/user_model.dart';
 import 'package:gallery/screens/live_screen.dart';
 import 'package:gallery/screens/login_screen.dart';
@@ -896,9 +895,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                const Text(
-                  'Anna Clark',
-                  style: TextStyle(
+                Text(
+                  '${loggedInUser.fullName}',
+                  style: const TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 20,
                     color: Color(0xff02132b),
@@ -907,9 +906,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   textAlign: TextAlign.center,
                   softWrap: false,
                 ),
-                const Text(
-                  'anna.clark@gmail.com',
-                  style: TextStyle(
+                Text(
+                  '${loggedInUser.email}',
+                  style: const TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 13,
                     color: Color(0xfea7adb5),
@@ -917,7 +916,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 1.7692307692307692,
                   ),
                   textHeightBehavior:
-                      TextHeightBehavior(applyHeightToFirstAscent: false),
+                      const TextHeightBehavior(applyHeightToFirstAscent: false),
                   textAlign: TextAlign.center,
                 ),
                 const Divider(),
