@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Instalike",
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: user != null ? HomeScreen() : XDMonProfil(),
+      home: user != null ? HomeScreen() : LoginScreen(),
     );
   }
 }
