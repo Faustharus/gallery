@@ -52,10 +52,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const <Widget>[
+                  children: <Widget>[
                     Text(
-                      "Anna Clark",
-                      style: TextStyle(
+                      "${loggedInUser.fullName}",
+                      style: const TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 13,
                         color: Color(0xff222222),
@@ -64,8 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       softWrap: false,
                     ),
                     Text(
-                      'anna.clark@gmail.com',
-                      style: TextStyle(
+                      '${loggedInUser.email}',
+                      style: const TextStyle(
                         fontFamily: 'Avenir Next',
                         fontSize: 11,
                         color: Color(0xffbbbbbb),
