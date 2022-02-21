@@ -33,70 +33,88 @@ class _LiveScreenState extends State<LiveScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Your Gallery"),
-      ),
-      body: Center(
-        child: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection("users")
-              .doc(widget.userId)
-              .collection("images")
-              .snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (BuildContext context, int index) {
-                  if (!snapshot.data!.docs.length.isNaN) {
-                    String url = snapshot.data!.docs[index]['downloadURL'];
-                    Image bigPics =
-                        Image.network(url, height: 400, fit: BoxFit.cover);
-                    return Material(
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (_) {
-                            return DetailScreen(
-                                urlImage: url,
-                                currentImage: bigPics,
-                                idImage: snapshot.data!.docs[index].id);
-                          }));
-                        },
-                        child: Hero(tag: url, child: bigPics),
-                      ),
-                    );
-                  } else {
-                    return Dismissible(
-                        key: Key(snapshot.data!.docs[index]['downloadURL']),
-                        child: const Text(""));
-                  }
-                },
-              );
-            } else {
-              return (const Center(
-                child: Text(
-                  ("No image uploaded"),
-                ),
-              ));
-            }
-          },
+      body: _coreCenter(),
+    );
+  }
+
+  _buildImage() {
+    return Container(
+      width: 42.39,
+      height: 42.39,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/Residence.png'),
+          fit: BoxFit.cover,
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.elliptical(9999.0, 9999.0),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ImageScreen(
-                userId: loggedInUser.uid,
+    );
+  }
+
+  _coreCenter() {
+    return Center(
+      child: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("users")
+            .doc(widget.userId)
+            .collection("images")
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (BuildContext context, int index) {
+                if (!snapshot.data!.docs.length.isNaN) {
+                  String url = snapshot.data!.docs[index]['downloadURL'];
+                  Image bigPics =
+                      Image.network(url, height: 400, fit: BoxFit.cover);
+                  return Material(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) {
+                          return DetailScreen(
+                              urlImage: url,
+                              currentImage: bigPics,
+                              idImage: snapshot.data!.docs[index].id);
+                        }));
+                      },
+                      child: Hero(tag: url, child: bigPics),
+                    ),
+                  );
+                } else {
+                  return Dismissible(
+                      key: Key(snapshot.data!.docs[index]['downloadURL']),
+                      child: const Text(""));
+                }
+              },
+            );
+          } else {
+            return (const Center(
+              child: Text(
+                ("No image uploaded"),
               ),
-            ),
-          );
+            ));
+          }
         },
-        child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  _plusButton() {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ImageScreen(
+              userId: loggedInUser.uid,
+            ),
+          ),
+        );
+      },
+      child: const Icon(Icons.add),
     );
   }
 }
