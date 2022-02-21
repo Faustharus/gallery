@@ -61,7 +61,7 @@ class _LiveScreenState extends State<LiveScreen> {
                           "Fil d'Actualités",
                           style: TextStyle(
                             fontFamily: 'Averia Sans Libre',
-                            fontSize: 24,
+                            fontSize: 20,
                             color: Color(0xff02132b),
                             letterSpacing: -0.48,
                             fontWeight: FontWeight.w600,
@@ -102,8 +102,8 @@ class _LiveScreenState extends State<LiveScreen> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                 child: SizedBox(
-                  width: 400,
-                  height: 400,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height - 255,
                   child: Stack(
                     children: <Widget>[
                       StreamBuilder(
@@ -121,11 +121,127 @@ class _LiveScreenState extends State<LiveScreen> {
                                 if (!snapshot.data!.docs.length.isNaN) {
                                   String url =
                                       snapshot.data!.docs[index]['downloadURL'];
-                                  Image bigPics = Image.network(url,
-                                      height: 400, fit: BoxFit.cover);
-                                  return bigPics;
+                                  Image bigPics = Image.network(
+                                    url,
+                                    height: 400,
+                                    width: 400,
+                                    fit: BoxFit.cover,
+                                  );
+                                  return Material(
+                                    child: Stack(
+                                      alignment: Alignment.bottomLeft,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) {
+                                                return DetailScreen(
+                                                    urlImage: url,
+                                                    currentImage: bigPics,
+                                                    idImage: snapshot
+                                                        .data!.docs[index].id);
+                                              }));
+                                            },
+                                            child:
+                                                Hero(tag: url, child: bigPics),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              6, 0, 0, 12),
+                                          child: Row(
+                                            children: <Widget>[
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: Container(
+                                                  width: 37.39,
+                                                  height: 37.39,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    image: DecorationImage(
+                                                      image: AssetImage(
+                                                          'assets/Residence.png'),
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.elliptical(
+                                                          9999.0, 9999.0),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .fromLTRB(
+                                                                0, 0, 8, 0),
+                                                        child: Text(
+                                                          "${loggedInUser.fullName}",
+                                                          style:
+                                                              const TextStyle(
+                                                            fontFamily:
+                                                                'Sofia Pro',
+                                                            fontSize: 16,
+                                                            color: Color(
+                                                                0xffffffff),
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            height: 1.125,
+                                                          ),
+                                                          textHeightBehavior:
+                                                              const TextHeightBehavior(
+                                                                  applyHeightToFirstAscent:
+                                                                      false),
+                                                          softWrap: false,
+                                                        ),
+                                                      ),
+                                                      const Text(
+                                                        "22 min",
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              'Sofia Pro',
+                                                          fontSize: 12,
+                                                          color:
+                                                              Color(0xff88888b),
+                                                          height:
+                                                              1.5454545454545454,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const Text(
+                                                    "Un superbe lieu",
+                                                    style: TextStyle(
+                                                      fontFamily: 'Sofia Pro',
+                                                      fontSize: 12,
+                                                      color: Color(0xff88888b),
+                                                      height:
+                                                          1.5454545454545454,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 }
-                                return Text("N/A");
+                                return const Text("N/A");
                               },
                             );
                           } else {
@@ -141,7 +257,12 @@ class _LiveScreenState extends State<LiveScreen> {
                   ),
                 ),
               ),
-              _plusButton(),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  child: _plusButton(),
+                ),
+              ),
             ],
           ),
         ),
@@ -216,6 +337,7 @@ class _LiveScreenState extends State<LiveScreen> {
 
   _plusButton() {
     return FloatingActionButton(
+      backgroundColor: Colors.white,
       onPressed: () {
         Navigator.push(
           context,
@@ -226,7 +348,11 @@ class _LiveScreenState extends State<LiveScreen> {
           ),
         );
       },
-      child: const Icon(Icons.add),
+      child: const Icon(
+        Icons.add,
+        color: Colors.black,
+        size: 30,
+      ),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gallery/models/user_model.dart';
 import 'package:gallery/screens/live_screen.dart';
 import 'package:gallery/screens/login_screen.dart';
+import 'package:gallery/screens/profile_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,6 +19,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
+
+  bool _pushNotif = true;
 
   @override
   void initState() {
@@ -43,7 +46,14 @@ class _HomeScreenState extends State<HomeScreen> {
         height: 60,
         child: MaterialButton(
           padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-          onPressed: null,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ProfileScreen(),
+              ),
+            );
+          },
           child: Row(
             children: <Widget>[
               _buildButtonImage(),
@@ -233,9 +243,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const Spacer(),
-              const Align(
+              Align(
                 alignment: Alignment.centerRight,
-                child: CupertinoSwitch(value: true, onChanged: null),
+                child: CupertinoSwitch(
+                  value: _pushNotif,
+                  onChanged: (bool newValue) {
+                    setState(() {
+                      _pushNotif = newValue;
+                    });
+                  },
+                  activeColor: Colors.black,
+                ),
               ),
             ],
           ),

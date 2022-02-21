@@ -194,7 +194,8 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       backgroundColor: Colors.white,
       body: Center(
-        child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 84, 0, 0),
           child: Container(
             color: Colors.white,
             child: Padding(

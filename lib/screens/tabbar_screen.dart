@@ -15,11 +15,14 @@ class _TabBarScreenState extends State<TabBarScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
-        length: 0,
+        length: 2,
         child: Scaffold(
           bottomNavigationBar: menu(),
-          body: const TabBarView(
-            children: [],
+          body: TabBarView(
+            children: [
+              LiveScreen(),
+              EmptyScreen(),
+            ],
           ),
         ),
       ),
@@ -30,18 +33,18 @@ class _TabBarScreenState extends State<TabBarScreen> {
     return Container(
       height: 80,
       color: Colors.blue,
-      child: const TabBar(
+      child: TabBar(
         indicatorPadding: const EdgeInsets.all(16),
         tabs: [
-          // Tab(
-          //   icon: _homeIcon(),
-          // ),
-          // const Tab(
-          //   icon: Icon(
-          //     Icons.people,
-          //     color: Colors.grey,
-          //   ),
-          // ),
+          Tab(
+            icon: _homeIcon(),
+          ),
+          const Tab(
+            icon: Icon(
+              Icons.people,
+              color: Colors.grey,
+            ),
+          ),
         ],
       ),
     );
