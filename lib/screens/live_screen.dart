@@ -33,7 +33,119 @@ class _LiveScreenState extends State<LiveScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _coreCenter(),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(25, 50, 25, 50),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Align(
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          "Bonjour, ${loggedInUser.fullName} 👋",
+                          style: const TextStyle(
+                            fontFamily: 'Sofia Pro',
+                            fontSize: 14,
+                            color: Colors.grey,
+                            height: 1.125,
+                          ),
+                          textHeightBehavior: const TextHeightBehavior(
+                              applyHeightToFirstAscent: false),
+                          softWrap: false,
+                        ),
+                        const Text(
+                          "Fil d'Actualités",
+                          style: TextStyle(
+                            fontFamily: 'Averia Sans Libre',
+                            fontSize: 24,
+                            color: Color(0xff02132b),
+                            letterSpacing: -0.48,
+                            fontWeight: FontWeight.w600,
+                            height: 0.9166666666666666,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          textHeightBehavior: TextHeightBehavior(
+                              applyHeightToFirstAscent: false),
+                          softWrap: false,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: true).pop(context);
+                    },
+                    child: _buildImage(),
+                  ),
+                ],
+              ),
+              const Divider(),
+              const Text(
+                "Récents",
+                style: TextStyle(
+                  fontFamily: 'Averia Sans Libre',
+                  fontSize: 15,
+                  color: Color(0xff02132b),
+                  fontWeight: FontWeight.w600,
+                  height: 1.4666666666666666,
+                  fontStyle: FontStyle.italic,
+                ),
+                textHeightBehavior:
+                    TextHeightBehavior(applyHeightToFirstAscent: false),
+                softWrap: false,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                child: SizedBox(
+                  width: 400,
+                  height: 400,
+                  child: Stack(
+                    children: <Widget>[
+                      StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection("users")
+                            .doc(widget.userId)
+                            .collection("images")
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                if (!snapshot.data!.docs.length.isNaN) {
+                                  String url =
+                                      snapshot.data!.docs[index]['downloadURL'];
+                                  Image bigPics = Image.network(url,
+                                      height: 400, fit: BoxFit.cover);
+                                  return bigPics;
+                                }
+                                return Text("N/A");
+                              },
+                            );
+                          } else {
+                            return (const Center(
+                              child: Text(
+                                ("No image uploaded"),
+                              ),
+                            ));
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              _plusButton(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
