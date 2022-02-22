@@ -12,7 +12,7 @@ class _EmptyScreenState extends State<EmptyScreen> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text("Hello, World !"),
+        child: Text("Hello, World ! - Work in Progress"),
       ),
     );
   }

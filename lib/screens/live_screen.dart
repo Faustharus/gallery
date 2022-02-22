@@ -35,12 +35,14 @@ class _LiveScreenState extends State<LiveScreen> {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(25, 50, 25, 50),
+          padding: const EdgeInsets.fromLTRB(25, 40, 25, 16),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Align(
                     child: Column(
@@ -100,10 +102,10 @@ class _LiveScreenState extends State<LiveScreen> {
                 softWrap: false,
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height - 255,
+                  height: MediaQuery.of(context).size.height - 135,
                   child: Stack(
                     children: <Widget>[
                       StreamBuilder(
@@ -253,16 +255,22 @@ class _LiveScreenState extends State<LiveScreen> {
                           }
                         },
                       ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          child: _plusButton(),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  child: _plusButton(),
-                ),
-              ),
+              // Align(
+              //   alignment: Alignment.bottomCenter,
+              //   child: Container(
+              //     child: _plusButton(),
+              //   ),
+              // ),
             ],
           ),
         ),
